@@ -1,0 +1,69 @@
+
+Jenkins Download links:
+https://updates.jenkins-ci.org/download/war/
+https://plugins.jenkins.io/  --> pluginler
+
+
+Jenkins kodlarý(Repolarý):
+https://github.com/bulutluoz/batch30-Cucumber.git
+https://github.com/MuratTANC/JenkinsDeneme.git
+
+Selenium Grid Kodlarý(Repolarý):
+https://github.com/B86-87/cucumber.git
+https://github.com/yasinaniltechpro/TestNG.git
+
+
+Oluþan kurulum kodu(Her kurulumda farklý kod oluþur):
+7d4d980082da4e529c85ad63bdb0a4b3
+
+Kodun blunduðu dosya yolu: 
+C:\Users\Kullanýcý addý\.jenkins\secrets\initialAdminPassword (bu adresi browser'a veya windows adres satýrýna yazýp entera basýyoruz)
+
+Jenkins Çalýþtýrma (jenkins.war):
+java -jar jenkins.war --> bu kod çalýþtýrýldýktan sonra browser'a http://localhost:8080/ adresi yazýlarak jenkins çalýþtýrýlýr
+java -jar jenkins.war --httpPort=8081 : Eger 8080 portu baska bir uygulama tarafýndan kullanýlýyorsa port bu þekilde degiþtirilebilir
+
+	Jenkins'te Ayarlamalar
+
+-Dashboard/Manage Jenkins altýnda;
+	-> Configure System'de port ayalarlamada dahil birçok þlem yapýlabilir 
+	-> Plugins'de sistemin mail göndermesi ve daha birçok özellik barýndýran 1000'den fazla eklenti dahil edilebilir ve mevcut eklentiler yönetilebilir
+	- >Global Tool Configuration'da JDK, Git ve Maven ile ilgili ayarlamalar yapýlýr. (Bunlarýn dýþýnda da ayarlamalarda mevcut)
+		-->JDK altýnda Name kýsmýna istediðimiz bir ismi veriyoruz(Tercihen JDK sürümünün adý olabilir),
+		   JAVA_HOME kýsmýna JDK nýn kurulu olduðu klasörü gösteriyoruz. 
+		    (JDK dosya yolunu bulmak için cmd açýlýp komut satýrýna "where jdk" komutu yazýlabilir)
+		    (Eger bilgisayarda ortam deðiþkenleri kýsmýnda JAVA_HOME yoksa buraya yeni deðiþken ekleyip ismini JAVA_HOME koyup;
+		     yolunu da mevcut JDK'nýn kurulu olduðu yolu göstermeliyiz. Yoksa jenkins'te run kýsmýnda JDK sorunlarý ile karþýlaþýlabilir. 
+		     Örnek JDK yolu:"C:\Program Files\Java\jdk-11.0.15)"
+		     veya "Install automatically" kýsmý iþaretlenerek JDK otomatik olarak kurdurulabilir
+		-->Git altýnda Name kýsmýna Default,  Path to Git executable kýsmýna git'in kurulu olduðu klasörü gösteriyoruz.
+		    (git dosya yolunu bulmak için cmd açýlýp komut satýrýna "where git" komutu yazýlabilir)
+		     Örnek git yolu:"C:\Program Files\Git\cmd\git.exe"
+		     veya yukarýdaki gibi benzer þekilde "Install automatically" kýsmý iþaretlenerek git otomatik olarak kurdurulabilir.
+		-->Maven altýnda Name kýsmýna mvn yazýlýr (burada dikkat edilmelidir; zira bu isim ileride proje açýldýðýnda lgili maven'ý seçmek için kullanýlacaktýr)     
+		   MAVEN_HOME kýsmýna da benzer þekilde maven'ýn kurulu olduðu klasörü gösteriyoruz. (burada maven yolu cmd ile bulunamýyor(ben bulamadým))
+		    Örnek maven yolu:"C:\Program Files\apache-maven-3.8.6" veya "C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2022.2.3\plugins\maven\lib\maven3"
+	->Bu ayarlamalar yapýldýktan sonra Apply ve Save butaonlarýna basarak deðiþiklikleri kaydediyoruz.
+	-> Dashboard altýnda daha bir çok özellik mevcut.
+		
+	Jenkins'te Free Style proje oluþturma
+	
+- Dashboard altýnda --> New Item'a týklanýr, Daha sonra istenen bir isim girilerek Freestyle project seçilir ve ok'e týklanýr,
+		    --> Description'a açýklamalar yazýlýr, GitHub project iþaretlenir ve "Project url" kýsmýna github'da eriþim izni olan bir Repositoy'nin url'si girilir
+		    --> Source Code Management kýsmýnda Git seçilir "Repository URL" kýsmýna yukarýdaki url'in aynýsý girilir. 
+			(Eðer gerekli ise Credentials kýsmýna kimlik bilgileri yani kullanýcý doðrulama bilgileri girilir)
+			"Branches to build altýnda" "Branch Specifier (blank for 'any')" kýsmýnýn "*/main" olduðundan emin olunur. (Bu durum repodaki branch main olduðunda önemlidir)
+		    --> Daha sonra "Build Steps" kýsmýnda "Add buid step" kýsmýndan "Invoke top-level Maven targets" seçilir,
+			 "Maven Version" altýnda yukarýda oluþturduðumuz "mvn"	seçilir,
+			 "Goals" kýsmýna "install clean" yazýlýr.
+	->Bu ayarlamalar yapýldýktan sonra Apply ve Save butaonlarýna basarak deðiþiklikleri kaydediyoruz.
+		    --> Daha sonra açýlan proje sayfasýnda (Dashboard>Proje_adý> þeklinde görülür) "Build Now"a týklanarak proje uzak sunucuda çalýþýrýlýr.
+			---> Çalýþtýrýlanproje ile ilgili bilgilere sol alt kýsýmda bulýnan "Build History" altýnda tarih saat þeklinde olan kýsýmlardan Build iþlemi ileilgili
+			      ayrýntýlara ulaþýlabilir.(Hata alýnmasý durumunda konsol çýktýsý, hata alýnmasada konsol çýktýsý görüntülenebilir)
+		    --> Ayrýca proje sayfasýnda projeyle ilgili (Build Now, Configure vb.) ayarlamalar yapýlabilir.
+
+***Tüm bunlarýn yaný sýra Jenkins çok kapsamlý bir ders. Yaklaþýk 11 günde anlatýlýyor. Bizim için bu kadarýný bilmemiz ve ihtiyacýmýz olacak olan þeylere nasýl ulaþabileceðimizi anladýk ise yeterlidir.
+
+			
+
+
